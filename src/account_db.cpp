@@ -1,10 +1,10 @@
 /**
- * @file      main.cpp
+ * @file      account_db.cpp
  * @brief     
  * @details   
  * @author    RW
  * @version     
- * @date      2020/8/19 0:46:18:45
+ * @date      2020/8/19 16:27:55:965
  * @copyright RW
  * @par         (c) COPYRIGHT 2010-2018 by RW Systems, Inc.    
  *                        All rights reserved.
@@ -15,97 +15,59 @@
  *     other than as expressly provided by the written license agreement    
  *     between RW Systems and its licensee.
  * @par History      
- *         1.Date         -- 2020/8/19 0:46:18:45
+ *         1.Date         -- 2020/8/19 16:27:55:965
  *           Author       -- RW
  *           Modification -- Created file
  *
  */
 
-#define  MAIN_GLOBAL
+#define  ACCOUNT_DB_GLOBAL
 
 /* includes-------------------------------------------------------------------*/
-#include <QApplication>
-#include <QDebug>
-#include <QMessageBox>
-#include <glog/logging.h>
-#include <io.h>
-#include <direct.h>
-#include "main_win.hh"
-#include "version.h"
-#include "config.hh"
-#include "db.hh"
-
-
-
-
+#include "account_db.hh"
     
-/** @defgroup MAIN                                            
-  * @brief MAIN system modules                                
+/** @defgroup ACCOUNT_DB                                            
+  * @brief ACCOUNT_DB system modules                                
   * @{                                                                         
   */
     
 /* Private typedef&macro&definde----------------------------------------------*/
 
+
+
 /* Private variables ---------------------------------------------------------*/
+const char* ACCOUNT_TYPE_NAMES[] = {
+    "银行",
+    "现金",
+    "资产",
+    "信用卡",
+    "负债",
+};
+
+
 /* Private functions ---------------------------------------------------------*/
 /* External functions --------------------------------------------------------*/
 /* External variables --------------------------------------------------------*/
                                                                                 
-/** @defgroup MAIN_Private_Functions                          
+/** @defgroup ACCOUNT_DB_Private_Functions                          
   * @{                                                                         
-  */     
-
-static void __Log_Init(const char* appname){
-    char currentPath[1024] = {0};
-    char logPath[1024] = {0};
-
-    _getcwd(currentPath, sizeof(currentPath));
-    sprintf(logPath, "%s\\logs\\", currentPath);
-    if(_access(logPath, F_OK) != 0){
-        _mkdir(logPath);
-    }
-    qDebug() << "logPath=" << logPath;
-    FLAGS_colorlogtostderr = true;
-    FLAGS_alsologtostderr = true;
-    std::string logPathString = logPath;
-    std::string logfileprefix = logPathString + "fatal-";
-    google::SetLogDestination(google::GLOG_FATAL, logfileprefix.c_str());
-    logfileprefix = logPathString + "error-";
-    google::SetLogDestination(google::GLOG_ERROR, logfileprefix.c_str());
-    logfileprefix = logPathString + "warning-";
-    google::SetLogDestination(google::GLOG_WARNING, logfileprefix.c_str());
-    logfileprefix = logPathString + "info-";
-    google::SetLogDestination(google::GLOG_INFO, logfileprefix.c_str());
-    google::InitGoogleLogging(appname);
-    google::SetLogFilenameExtension(".log");
-    FLAGS_logbufsecs = 0;
-}
-
+  */                                                                            
                                                                                 
 /**                                                                             
   * @}                                                                         
   */	                                                                        
                                                                                 
-/** @defgroup MAIN_Functions                          
+/** @defgroup ACCOUNT_DB_Global_Functions                          
   * @{                                                                         
-  */    
+  */        
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    __Log_Init(argv[0]);
-    LOG(INFO) << APP_NAME << "-v" << APP_VERSION << " running......";
-
-    if (!QSqlDatabase::drivers().contains("QSQLITE")){
-        QMessageBox::critical(nullptr, "Unable to load database", "This APP needs the SQLITE driver");
-        return -1;
-    } 
-    
-    CMainWin w;
-    w.show();
-    return a.exec();
+QStringList Get_All_Account_Type_Names(){
+    QStringList res;
+    for(auto v : ACCOUNT_TYPE_NAMES){
+        res << QString(v);
+    }
+    return res;
 }
-
                                                                                 
 /**                                                                             
   * @}                                                                         
@@ -116,10 +78,4 @@ int main(int argc, char *argv[])
   */
                                                                                 
 /*************** (C) COPYRIGHT 2010-2018 RW ***********END OF FILE*************/
-
-
-
-
-
-
 

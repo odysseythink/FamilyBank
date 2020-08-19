@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,16 +16,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/account_db.cpp \
     src/config.cpp \
+    src/db.cpp \
+    src/file_properties_win.cpp \
     src/main.cpp \
     src/main_win.cpp
 
 HEADERS += \
+    src/account_db.hh \
     src/config.hh \
+    src/db.hh \
+    src/file_properties_win.hh \
     src/main_win.hh \
     src/version.h
 
 FORMS += \
+    src/file_properties_win.ui \
     src/main_win.ui
 
 # Default rules for deployment.
@@ -34,3 +41,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 LIBS += -lglog
+
+RESOURCES += \
+    resource/res.qrc
+
+RC_ICONS = logo-256x256.ico

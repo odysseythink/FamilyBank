@@ -1,10 +1,10 @@
 /**
- * @file      config.hh
+ * @file      db.hh
  * @brief     
  * @details   
  * @author    RW
  * @version     
- * @date      2020/8/18 1:22:31:501
+ * @date      2020/8/19 0:22:10:797
  * @copyright RW
  * @par         (c) COPYRIGHT 2010-2018 by RW Systems, Inc.    
  *                        All rights reserved.
@@ -15,31 +15,33 @@
  *     other than as expressly provided by the written license agreement    
  *     between RW Systems and its licensee.
  * @par History      
- *         1.Date         -- 2020/8/18 1:22:31:501
+ *         1.Date         -- 2020/8/19 0:22:10:797
  *           Author       -- RW
  *           Modification -- Created file
  *
  */
-#ifndef __CONFIG_HH__
-#define __CONFIG_HH__
+#ifndef __DB_HH__
+#define __DB_HH__
 
-#ifdef  CONFIG_GLOBAL
-#define CONFIG_EXT
+#ifdef  DB_GLOBAL
+#define DB_EXT
 #else
-#define CONFIG_EXT extern
-#endif /* CONFIG_GLOBAL */
+#define DB_EXT extern
+#endif /* DB_GLOBAL */
 
 /*============================================================================*/
 /*                                  @INCLUDES                                 */
 /*============================================================================*/
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
 #include <string>
-#include <QString>
-
 
 using namespace std;
 
 
-/** @addtogroup CONFIG
+
+/** @addtogroup DB
   * @{
   */
  
@@ -54,47 +56,19 @@ using namespace std;
 /*============================================================================*/
 /*                                   @FUNCS                                   */
 /*============================================================================*/
-                                                                                
+QSqlError Load_Db(const string& filepath);
+
+
+
 /*============================================================================*/
 /*                                   @CLASS                                   */
 /*============================================================================*/
-class Config
-{
-public:
-    static Config* GetInstance()
-    {
-        if(m_iInstance == nullptr) { //判断是否第一次调用
-            m_iInstance = new Config();
-        }
-        return m_iInstance;
-    }
-    string Get_DbFilePath(){
-        return m_strDbFilePath;
-    }
-    void Set_DbFilePath(const string& filepath){
-        if(m_strDbFilePath != filepath){
-            m_bUnCache = true;
-            m_strDbFilePath = filepath;
-            __Update_Setttings_To_Local();
-        }
-    }
+                                                                                
 
-
-private:
-    Config();
-    void __Load_Setttings_From_Local(const QString& filepath);
-    void __Update_Setttings_To_Local();
-
-private:
-    static Config *m_iInstance;
-    bool m_bUnCache;
-    string m_strDbFilePath;
-};
-                                                                                                                                                                                                                                                                                                    
-/**                                                                                                                                                                                                                    
-  * @}                                                                                                                                                               
-  */                                                                                                                                                                
-		                                                                                                          
-#endif /* __CONFIG_HH__ */                                                     
+/**
+  * @}
+  */ 
+		
+#endif /* __DB_HH__ */
 /*************** (C) COPYRIGHT 2010-2018 RW ***********END OF FILE*************/
 

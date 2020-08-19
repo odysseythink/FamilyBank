@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon/hicolor_actions_24x24_hb-document-new.png</file>
+        <file>icon/hicolor_actions_24x24_hb-document-open.png</file>
+        <file>icon/hicolor_actions_24x24_hb-document-save.png</file>
+        <file>icon/hicolor_actions_24x24_hb-document-save-as.png</file>
+        <file>icon/hicolor_actions_24x24_hb-account.png</file>
+        <file>icon/hicolor_actions_24x24_hb-archive.png</file>
+        <file>icon/hicolor_actions_24x24_hb-assign.png</file>
+        <file>icon/hicolor_actions_24x24_hb-budget.png</file>
+        <file>icon/hicolor_actions_24x24_hb-category.png</file>
+        <file>icon/hicolor_actions_24x24_hb-currency.png</file>
+        <file>icon/hicolor_actions_24x24_hb-payee.png</file>
+        <file>icon/hicolor_actions_24x24_hb-ope-add.png</file>
+        <file>icon/hicolor_actions_24x24_hb-ope-show.png</file>
+        <file>icon/hicolor_actions_24x24_hb-rep-balance.png</file>
+        <file>icon/hicolor_actions_24x24_hb-rep-budget.png</file>
+        <file>icon/hicolor_actions_24x24_hb-rep-stats.png</file>
+        <file>icon/hicolor_actions_24x24_hb-rep-time.png</file>
+        <file>icon/hicolor_actions_24x24_hb-rep-vehicle.png</file>
+        <file>logo-256x256.png</file>
+    </qresource>
+</RCC>

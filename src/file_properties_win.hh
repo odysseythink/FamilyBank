@@ -1,10 +1,10 @@
 /**
- * @file      config.hh
+ * @file      file_properties_win.hh
  * @brief     
  * @details   
  * @author    RW
  * @version     
- * @date      2020/8/18 1:22:31:501
+ * @date      2020/8/19 16:40:2:156
  * @copyright RW
  * @par         (c) COPYRIGHT 2010-2018 by RW Systems, Inc.    
  *                        All rights reserved.
@@ -15,31 +15,28 @@
  *     other than as expressly provided by the written license agreement    
  *     between RW Systems and its licensee.
  * @par History      
- *         1.Date         -- 2020/8/18 1:22:31:501
+ *         1.Date         -- 2020/8/19 16:40:2:156
  *           Author       -- RW
  *           Modification -- Created file
  *
  */
-#ifndef __CONFIG_HH__
-#define __CONFIG_HH__
+#ifndef __FILE_PROPERTIES_WIN_HH__
+#define __FILE_PROPERTIES_WIN_HH__
 
-#ifdef  CONFIG_GLOBAL
-#define CONFIG_EXT
+#ifdef  FILE_PROPERTIES_WIN_GLOBAL
+#define FILE_PROPERTIES_WIN_EXT
 #else
-#define CONFIG_EXT extern
-#endif /* CONFIG_GLOBAL */
+#define FILE_PROPERTIES_WIN_EXT extern
+#endif /* FILE_PROPERTIES_WIN_GLOBAL */
 
 /*============================================================================*/
 /*                                  @INCLUDES                                 */
 /*============================================================================*/
-#include <string>
-#include <QString>
+#include <QDialog>
 
 
-using namespace std;
 
-
-/** @addtogroup CONFIG
+/** @addtogroup FILE_PROPERTIES_WIN
   * @{
   */
  
@@ -58,43 +55,29 @@ using namespace std;
 /*============================================================================*/
 /*                                   @CLASS                                   */
 /*============================================================================*/
-class Config
+namespace Ui {
+class CFilePropertiesWin;
+}
+
+class CFilePropertiesWin : public QDialog
 {
+    Q_OBJECT
+
 public:
-    static Config* GetInstance()
-    {
-        if(m_iInstance == nullptr) { //判断是否第一次调用
-            m_iInstance = new Config();
-        }
-        return m_iInstance;
-    }
-    string Get_DbFilePath(){
-        return m_strDbFilePath;
-    }
-    void Set_DbFilePath(const string& filepath){
-        if(m_strDbFilePath != filepath){
-            m_bUnCache = true;
-            m_strDbFilePath = filepath;
-            __Update_Setttings_To_Local();
-        }
-    }
-
+    explicit CFilePropertiesWin(QWidget *parent = nullptr);
+    ~CFilePropertiesWin();
 
 private:
-    Config();
-    void __Load_Setttings_From_Local(const QString& filepath);
-    void __Update_Setttings_To_Local();
-
-private:
-    static Config *m_iInstance;
-    bool m_bUnCache;
-    string m_strDbFilePath;
+    Ui::CFilePropertiesWin *ui;
 };
-                                                                                                                                                                                                                                                                                                    
-/**                                                                                                                                                                                                                    
-  * @}                                                                                                                                                               
-  */                                                                                                                                                                
-		                                                                                                          
-#endif /* __CONFIG_HH__ */                                                     
+
+
+
+
+/**
+  * @}
+  */ 
+		
+#endif /* __FILE_PROPERTIES_WIN_HH__ */
 /*************** (C) COPYRIGHT 2010-2018 RW ***********END OF FILE*************/
 

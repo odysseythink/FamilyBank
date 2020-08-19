@@ -1,10 +1,10 @@
 /**
- * @file      main.cpp
+ * @file      db.cpp
  * @brief     
  * @details   
  * @author    RW
  * @version     
- * @date      2020/8/19 0:46:18:45
+ * @date      2020/8/19 0:22:22:627
  * @copyright RW
  * @par         (c) COPYRIGHT 2010-2018 by RW Systems, Inc.    
  *                        All rights reserved.
@@ -15,95 +15,81 @@
  *     other than as expressly provided by the written license agreement    
  *     between RW Systems and its licensee.
  * @par History      
- *         1.Date         -- 2020/8/19 0:46:18:45
+ *         1.Date         -- 2020/8/19 0:22:22:627
  *           Author       -- RW
  *           Modification -- Created file
  *
  */
 
-#define  MAIN_GLOBAL
+#define  DB_GLOBAL
 
 /* includes-------------------------------------------------------------------*/
-#include <QApplication>
 #include <QDebug>
-#include <QMessageBox>
 #include <glog/logging.h>
-#include <io.h>
-#include <direct.h>
-#include "main_win.hh"
-#include "version.h"
-#include "config.hh"
 #include "db.hh"
 
 
 
-
     
-/** @defgroup MAIN                                            
-  * @brief MAIN system modules                                
+/** @defgroup DB                                            
+  * @brief DB system modules                                
   * @{                                                                         
   */
     
 /* Private typedef&macro&definde----------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
+static QSqlDatabase s_DB;
+
+
+
 /* Private functions ---------------------------------------------------------*/
 /* External functions --------------------------------------------------------*/
 /* External variables --------------------------------------------------------*/
                                                                                 
-/** @defgroup MAIN_Private_Functions                          
+/** @defgroup DB_Private_Functions                          
   * @{                                                                         
-  */     
-
-static void __Log_Init(const char* appname){
-    char currentPath[1024] = {0};
-    char logPath[1024] = {0};
-
-    _getcwd(currentPath, sizeof(currentPath));
-    sprintf(logPath, "%s\\logs\\", currentPath);
-    if(_access(logPath, F_OK) != 0){
-        _mkdir(logPath);
-    }
-    qDebug() << "logPath=" << logPath;
-    FLAGS_colorlogtostderr = true;
-    FLAGS_alsologtostderr = true;
-    std::string logPathString = logPath;
-    std::string logfileprefix = logPathString + "fatal-";
-    google::SetLogDestination(google::GLOG_FATAL, logfileprefix.c_str());
-    logfileprefix = logPathString + "error-";
-    google::SetLogDestination(google::GLOG_ERROR, logfileprefix.c_str());
-    logfileprefix = logPathString + "warning-";
-    google::SetLogDestination(google::GLOG_WARNING, logfileprefix.c_str());
-    logfileprefix = logPathString + "info-";
-    google::SetLogDestination(google::GLOG_INFO, logfileprefix.c_str());
-    google::InitGoogleLogging(appname);
-    google::SetLogFilenameExtension(".log");
-    FLAGS_logbufsecs = 0;
-}
-
+  */                                                                            
                                                                                 
 /**                                                                             
   * @}                                                                         
   */	                                                                        
                                                                                 
-/** @defgroup MAIN_Functions                          
+/** @defgroup DB_GLOBAL_Functions                          
   * @{                                                                         
-  */    
+  */        
 
-int main(int argc, char *argv[])
+QSqlError Load_Db(const string& filepath)
 {
-    QApplication a(argc, argv);
-    __Log_Init(argv[0]);
-    LOG(INFO) << APP_NAME << "-v" << APP_VERSION << " running......";
+    if(s_DB.isOpen()){
+        s_DB.close();
+    }
 
-    if (!QSqlDatabase::drivers().contains("QSQLITE")){
-        QMessageBox::critical(nullptr, "Unable to load database", "This APP needs the SQLITE driver");
-        return -1;
-    } 
-    
-    CMainWin w;
-    w.show();
-    return a.exec();
+    s_DB = QSqlDatabase::addDatabase("QSQLITE");
+    s_DB.setDatabaseName(QString::fromStdString(filepath));
+
+    if (!s_DB.open())
+        return s_DB.lastError();
+
+    /*
+    QStringList tables = s_DB.tables();
+    QSqlQuery q;
+    QString sql;
+    if (!tables.contains("tb_puzzle", Qt::CaseInsensitive)){
+        sql = "CREATE TABLE tb_puzzle (\
+                   id      INTEGER       PRIMARY KEY ASC AUTOINCREMENT\
+                                         UNIQUE,\
+                   level   INTEGER       DEFAULT (3),\
+                   content VARCHAR (512),\
+                   solved  BOOLEAN       DEFAULT (0) \
+               );";
+        if (!q.exec(sql)){
+            return q.lastError();
+        }
+    }
+    */
+
+    return QSqlError();
 }
 
                                                                                 
@@ -116,10 +102,4 @@ int main(int argc, char *argv[])
   */
                                                                                 
 /*************** (C) COPYRIGHT 2010-2018 RW ***********END OF FILE*************/
-
-
-
-
-
-
 

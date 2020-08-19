@@ -29,7 +29,9 @@
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <glog/logging.h>
 #include "config.hh"
+
     
 /** @defgroup CONFIG                                            
   * @brief CONFIG system modules                                
@@ -37,6 +39,8 @@
   */
     
 /* Private typedef&macro&definde----------------------------------------------*/
+#define CONFIG_FILENAME "./config.json"
+
 
 /* Private variables ---------------------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -60,67 +64,80 @@ Config * Config::m_iInstance = nullptr;
 
 Config::Config()
 {
+    m_bUnCache = false;
     m_strDbFilePath = "";
+
+    QFile jsonFile(CONFIG_FILENAME);
+
+    if(!jsonFile.exists()){
+        m_bUnCache = true;
+        __Update_Setttings_To_Local();
+    } else {
+        __Load_Setttings_From_Local(CONFIG_FILENAME);
+    }
 }
 
-void Config::__Load_Setttings()
+void Config::__Load_Setttings_From_Local(const QString& filepath)
 {
-    QFile loadFile("./config/config.json");
-    if(!loadFile.exists()){
+    QFile jsonFile(filepath);
 
+    if(!jsonFile.exists()){
+        if(!jsonFile.open(QIODevice::ReadOnly))
+        {
+            LOG(WARNING) << "could't open setting json file";
+            qDebug() << "could't open setting json file";
+            return;
+        }
+
+        QByteArray allData = jsonFile.readAll();
+        jsonFile.close();
+
+        QJsonParseError json_error;
+        QJsonDocument jsonDoc(QJsonDocument::fromJson(allData, &json_error));
+
+        if(json_error.error != QJsonParseError::NoError)
+        {
+            LOG(WARNING) << "could't parse setting json file:" << json_error.errorString().toStdString();
+            qDebug() << "could't parse setting json file:" << json_error.errorString();
+            return;
+        }
+
+        QJsonObject rootObj = jsonDoc.object();
+
+
+        //因为是预先定义好的JSON数据格式，所以这里可以这样读取
+        if(rootObj.contains("db_filepath") && rootObj["db_filepath"].isString())
+        {
+            m_strDbFilePath = rootObj.value("db_filepath").toString().toStdString();
+        }
     }
+}
 
-    if(!loadFile.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "could't open projects json";
+void Config::__Update_Setttings_To_Local()
+{
+    if(!m_bUnCache){
         return;
     }
 
-    QByteArray allData = loadFile.readAll();
-    loadFile.close();
+    QJsonDocument document;
+    QJsonObject rootObj;
+    document.setObject(rootObj);
 
-    QJsonParseError json_error;
-    QJsonDocument jsonDoc(QJsonDocument::fromJson(allData, &json_error));
+    if(m_strDbFilePath != ""){
+        rootObj.insert("db_filepath", QString::fromStdString(m_strDbFilePath));
+    }
 
-    if(json_error.error != QJsonParseError::NoError)
-    {
-        qDebug() << "json error!";
+    QFile file(CONFIG_FILENAME);
+
+    if (!file.open(QIODevice::WriteOnly)) {
+        LOG(WARNING) << "Fail to save contents to JSON file";
+        qDebug() << "Fail to save contents to JSON file";
         return;
     }
 
-    QJsonObject rootObj = jsonDoc.object();
-
-    QStringList keys = rootObj.keys();
-    for(int i = 0; i < keys.size(); i++)
-    {
-        qDebug() << "key" << i << " is:" << keys.at(i);
-    }
-
-    //因为是预先定义好的JSON数据格式，所以这里可以这样读取
-    if(rootObj.contains("first fruit"))
-    {
-       QJsonObject subObj = rootObj.value("first fruit").toObject();
-       qDebug() << "describe is:" << subObj["describe"].toString();
-       qDebug() << "icon is:" << subObj["icon"].toString();
-       qDebug() << "name is:" << subObj["name"].toString();
-    }
-
-    if(rootObj.contains("second fruit"))
-    {
-       QJsonObject subObj = rootObj.value("second fruit").toObject();
-       qDebug() << "describe is:" << subObj.value("describe").toString();
-       qDebug() << "icon is:" << subObj.value("icon").toString();
-       qDebug() << "name is:" << subObj.value("name").toString();
-    }
-
-    if(rootObj.contains("three fruit array"))
-    {
-       QJsonArray subArray = rootObj.value("three fruit array").toArray();
-       for(int i = 0; i< subArray.size(); i++)
-       {
-           qDebug() << i<<" value is:" << subArray.at(i).toString();
-       }
-    }
+    file.write(document.toJson());
+    file.close();
+    m_bUnCache = false;
 }
 
 
