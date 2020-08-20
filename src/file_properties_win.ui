@@ -641,5 +641,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>m_iChangeCurrencyBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CFilePropertiesWin</receiver>
+   <slot>On_ChangeCurrencyBtn_Clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>230</x>
+     <y>75</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>261</x>
+     <y>87</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>On_ChangeCurrencyBtn_Clicked()</slot>
+ </slots>
 </ui>

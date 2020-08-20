@@ -79,6 +79,16 @@ public:
         }
     }
 
+    string Get_BaseCurrencyISOCode(){
+        return m_strBaseCurrencyISOCode;
+    }
+    void Set_BaseCurrencyISOCode(const string& code){
+        if(m_strBaseCurrencyISOCode != code){
+            m_bUnCache = true;
+            m_strBaseCurrencyISOCode = code;
+            __Update_Setttings_To_Local();
+        }
+    }
 
 private:
     Config();
@@ -89,6 +99,7 @@ private:
     static Config *m_iInstance;
     bool m_bUnCache;
     string m_strDbFilePath;
+    string m_strBaseCurrencyISOCode;
 };
                                                                                                                                                                                                                                                                                                     
 /**                                                                                                                                                                                                                    

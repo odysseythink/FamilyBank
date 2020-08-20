@@ -1,10 +1,10 @@
 /**
- * @file      file_properties_win.hh
+ * @file      currency_db.hh
  * @brief     
  * @details   
  * @author    RW
  * @version     
- * @date      2020/8/19 16:40:2:156
+ * @date      2020/8/19 17:26:21:249
  * @copyright RW
  * @par         (c) COPYRIGHT 2010-2018 by RW Systems, Inc.    
  *                        All rights reserved.
@@ -15,35 +15,54 @@
  *     other than as expressly provided by the written license agreement    
  *     between RW Systems and its licensee.
  * @par History      
- *         1.Date         -- 2020/8/19 16:40:2:156
+ *         1.Date         -- 2020/8/19 17:26:21:249
  *           Author       -- RW
  *           Modification -- Created file
  *
  */
-#ifndef __FILE_PROPERTIES_WIN_HH__
-#define __FILE_PROPERTIES_WIN_HH__
+#ifndef __CURRENCY_DB_HH__
+#define __CURRENCY_DB_HH__
 
-#ifdef  FILE_PROPERTIES_WIN_GLOBAL
-#define FILE_PROPERTIES_WIN_EXT
+#ifdef  CURRENCY_DB_GLOBAL
+#define CURRENCY_DB_EXT
 #else
-#define FILE_PROPERTIES_WIN_EXT extern
-#endif /* FILE_PROPERTIES_WIN_GLOBAL */
+#define CURRENCY_DB_EXT extern
+#endif /* CURRENCY_DB_GLOBAL */
 
 /*============================================================================*/
 /*                                  @INCLUDES                                 */
 /*============================================================================*/
-#include <QDialog>
+#include <QString>
+#include <QList>
+#include <QPair>
+#include <QMap>
+#include <stdint.h>
+#include <string>
 
 
 
-/** @addtogroup FILE_PROPERTIES_WIN
+using namespace std;
+
+/** @addtogroup CURRENCY_DB
   * @{
   */
  
 /*============================================================================*/
 /*                             @MACROS & @TYPEDEFS                            */
 /*============================================================================*/
-                                                                                
+struct _iso4217
+{
+    string   curr_iso_code;
+    uint32_t curr_frac_digit;
+    string   curr_dec_char;
+    string   curr_grp_char;
+    bool     curr_is_prefix;
+    string   curr_symbol;
+    string   name;
+};
+typedef struct _iso4217 CurrencyInfo;
+
+
 /*============================================================================*/
 /*                             @GLOBAL VIRIABLES                              */
 /*============================================================================*/
@@ -51,36 +70,20 @@
 /*============================================================================*/
 /*                                   @FUNCS                                   */
 /*============================================================================*/
-                                                                                
+QString Get_Default_Currency_Name();
+QMap<string, CurrencyInfo*>* Get_All_Currencies_Info();
+CurrencyInfo* Get_Currency_Info(string iso_code);
+string Get_Currency_Name(string iso_code);
+
 /*============================================================================*/
 /*                                   @CLASS                                   */
 /*============================================================================*/
-namespace Ui {
-class CFilePropertiesWin;
-}
-
-class CFilePropertiesWin : public QDialog
-{
-    Q_OBJECT
-
-public:
-    explicit CFilePropertiesWin(QWidget *parent = nullptr);
-    ~CFilePropertiesWin();
-
-private slots:
-    void On_ChangeCurrencyBtn_Clicked();
-
-private:
-    Ui::CFilePropertiesWin *ui;
-};
-
-
-
+                                                                                
 
 /**
   * @}
   */ 
 		
-#endif /* __FILE_PROPERTIES_WIN_HH__ */
+#endif /* __CURRENCY_DB_HH__ */
 /*************** (C) COPYRIGHT 2010-2018 RW ***********END OF FILE*************/
 

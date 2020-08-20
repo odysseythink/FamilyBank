@@ -24,10 +24,12 @@
 #define  FILE_PROPERTIES_WIN_GLOBAL
 
 /* includes-------------------------------------------------------------------*/
+#include <QDebug>
 #include "file_properties_win.hh"
 #include "ui_file_properties_win.h"
 #include "account_db.hh"
-
+#include "currency_db.hh"
+#include "currency_select_win.hh"
 
 
 
@@ -62,11 +64,21 @@ CFilePropertiesWin::CFilePropertiesWin(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->m_iAccountTypeEdit->addItems(Get_All_Account_Type_Names());
+    ui->m_iCurrencyLbl->setText(Get_Default_Currency_Name());
 }
 
 CFilePropertiesWin::~CFilePropertiesWin()
 {
     delete ui;
+}
+
+void CFilePropertiesWin::On_ChangeCurrencyBtn_Clicked()
+{
+    std::shared_ptr<CCurrencySelectWin> pWin = std::make_shared<CCurrencySelectWin>(this);
+    if(pWin->exec() == QDialog::Accepted){
+        qDebug() << "selected currency name=" << pWin->Get_Selected_Currency_Name().c_str();
+        ui->m_iCurrencyLbl->setText(pWin->Get_Selected_Currency_Name().c_str());
+    }
 }
 
 

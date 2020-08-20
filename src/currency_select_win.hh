@@ -1,10 +1,10 @@
 /**
- * @file      file_properties_win.hh
+ * @file      currency_select_win.hh
  * @brief     
  * @details   
  * @author    RW
  * @version     
- * @date      2020/8/19 16:40:2:156
+ * @date      2020/8/19 18:7:36:114
  * @copyright RW
  * @par         (c) COPYRIGHT 2010-2018 by RW Systems, Inc.    
  *                        All rights reserved.
@@ -15,28 +15,33 @@
  *     other than as expressly provided by the written license agreement    
  *     between RW Systems and its licensee.
  * @par History      
- *         1.Date         -- 2020/8/19 16:40:2:156
+ *         1.Date         -- 2020/8/19 18:7:36:114
  *           Author       -- RW
  *           Modification -- Created file
  *
  */
-#ifndef __FILE_PROPERTIES_WIN_HH__
-#define __FILE_PROPERTIES_WIN_HH__
+#ifndef __CURRENCY_SELECT_WIN_HH__
+#define __CURRENCY_SELECT_WIN_HH__
 
-#ifdef  FILE_PROPERTIES_WIN_GLOBAL
-#define FILE_PROPERTIES_WIN_EXT
+#ifdef  CURRENCY_SELECT_WIN_GLOBAL
+#define CURRENCY_SELECT_WIN_EXT
 #else
-#define FILE_PROPERTIES_WIN_EXT extern
-#endif /* FILE_PROPERTIES_WIN_GLOBAL */
+#define CURRENCY_SELECT_WIN_EXT extern
+#endif /* CURRENCY_SELECT_WIN_GLOBAL */
 
 /*============================================================================*/
 /*                                  @INCLUDES                                 */
 /*============================================================================*/
 #include <QDialog>
+#include <QStandardItemModel>
+#include <QSortFilterProxyModel>
+#include <memory>
+#include "currency_db.hh"
 
+using namespace std;
 
-
-/** @addtogroup FILE_PROPERTIES_WIN
+ 
+/** @addtogroup CURRENCY_SELECT_WIN
   * @{
   */
  
@@ -56,22 +61,30 @@
 /*                                   @CLASS                                   */
 /*============================================================================*/
 namespace Ui {
-class CFilePropertiesWin;
+class CCurrencySelectWin;
 }
 
-class CFilePropertiesWin : public QDialog
+class CCurrencySelectWin : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit CFilePropertiesWin(QWidget *parent = nullptr);
-    ~CFilePropertiesWin();
+    explicit CCurrencySelectWin(QWidget *parent = nullptr);
+    ~CCurrencySelectWin();
+    CurrencyInfo* Get_Selected_Currency_Info();
+    string Get_Selected_Currency_Name();
+    string Get_Selected_Currency_IsoCode();
 
 private slots:
-    void On_ChangeCurrencyBtn_Clicked();
+    void On_SearchEdit_Changed(const QString& text);
+    void On_Currency_Pressed(const QModelIndex &index);
+
 
 private:
-    Ui::CFilePropertiesWin *ui;
+    Ui::CCurrencySelectWin *ui;
+    shared_ptr<QStandardItemModel> m_iCurrencyModel;
+    shared_ptr<QSortFilterProxyModel> m_iFilterModel;
+    string m_strCurrentCurrencyIsoCode;
 };
 
 
@@ -81,6 +94,6 @@ private:
   * @}
   */ 
 		
-#endif /* __FILE_PROPERTIES_WIN_HH__ */
+#endif /* __CURRENCY_SELECT_WIN_HH__ */
 /*************** (C) COPYRIGHT 2010-2018 RW ***********END OF FILE*************/
 

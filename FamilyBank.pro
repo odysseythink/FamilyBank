@@ -18,6 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     src/account_db.cpp \
     src/config.cpp \
+    src/currency_db.cpp \
+    src/currency_select_win.cpp \
     src/db.cpp \
     src/file_properties_win.cpp \
     src/main.cpp \
@@ -26,12 +28,15 @@ SOURCES += \
 HEADERS += \
     src/account_db.hh \
     src/config.hh \
+    src/currency_db.hh \
+    src/currency_select_win.hh \
     src/db.hh \
     src/file_properties_win.hh \
     src/main_win.hh \
     src/version.h
 
 FORMS += \
+    src/currency_select_win.ui \
     src/file_properties_win.ui \
     src/main_win.ui
 

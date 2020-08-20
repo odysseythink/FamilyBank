@@ -66,6 +66,7 @@ Config::Config()
 {
     m_bUnCache = false;
     m_strDbFilePath = "";
+    m_strBaseCurrencyISOCode = "CNY";
 
     QFile jsonFile(CONFIG_FILENAME);
 
@@ -104,11 +105,14 @@ void Config::__Load_Setttings_From_Local(const QString& filepath)
 
         QJsonObject rootObj = jsonDoc.object();
 
-
-        //因为是预先定义好的JSON数据格式，所以这里可以这样读取
         if(rootObj.contains("db_filepath") && rootObj["db_filepath"].isString())
         {
             m_strDbFilePath = rootObj.value("db_filepath").toString().toStdString();
+        }
+
+        if(rootObj.contains("base_currency_iso_code") && rootObj["base_currency_iso_code"].isString())
+        {
+            m_strBaseCurrencyISOCode = rootObj.value("base_currency_iso_code").toString().toStdString();
         }
     }
 }
@@ -121,14 +125,18 @@ void Config::__Update_Setttings_To_Local()
 
     QJsonDocument document;
     QJsonObject rootObj;
-    document.setObject(rootObj);
+
 
     if(m_strDbFilePath != ""){
         rootObj.insert("db_filepath", QString::fromStdString(m_strDbFilePath));
     }
 
-    QFile file(CONFIG_FILENAME);
+    if(m_strBaseCurrencyISOCode != ""){
+        rootObj.insert("base_currency_iso_code", QString::fromStdString(m_strBaseCurrencyISOCode));
+    }
 
+    document.setObject(rootObj);
+    QFile file(CONFIG_FILENAME);
     if (!file.open(QIODevice::WriteOnly)) {
         LOG(WARNING) << "Fail to save contents to JSON file";
         qDebug() << "Fail to save contents to JSON file";
