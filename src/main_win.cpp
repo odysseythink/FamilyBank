@@ -113,7 +113,7 @@ CMainWin::CMainWin(QWidget *parent)
             return;           
         }
 
-        QSqlError err = Load_Db(Config::GetInstance()->Get_DbFilePath());
+        QSqlError err = Init_Db(Config::GetInstance()->Get_DbFilePath());
         if (err.type() != QSqlError::NoError) {
             QMessageBox::critical(nullptr, "Unable to load database",
                         "Error load database: " + err.text());
@@ -134,7 +134,7 @@ void CMainWin::On_OpenAction_Triggered()
     if(path.length() == 0) {
         QMessageBox::information(NULL, tr("数据库文件"), tr("你没有选择任何数据库文件."));
     } else {
-        QSqlError err = Load_Db(path.toStdString());
+        QSqlError err = Init_Db(path.toStdString());
         if (err.type() != QSqlError::NoError) {
             QMessageBox::critical(nullptr, tr("无法加载数据库"),
                         "加载数据库失败: " + err.text());

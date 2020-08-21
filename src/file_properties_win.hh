@@ -33,6 +33,10 @@
 /*                                  @INCLUDES                                 */
 /*============================================================================*/
 #include <QDialog>
+#include <string>
+
+
+using namespace std;
 
 
 
@@ -69,9 +73,18 @@ public:
 
 private slots:
     void On_ChangeCurrencyBtn_Clicked();
+    void On_DatabaseFilePathBtn_Clicked();
+    void On_DatabaseFilenName_Changed();
+    void On_AccountName_Changed(const QString& name);
+    void On_Owner_Changed(const QString& name);
+    void On_Accept();
+
+private:
+    bool __Check_All_Right();
 
 private:
     Ui::CFilePropertiesWin *ui;
+    string m_strBaseCurrencyIsoCode;
 };
 
 

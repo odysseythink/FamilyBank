@@ -27,6 +27,7 @@
 #include <QDebug>
 #include <glog/logging.h>
 #include "db.hh"
+#include "config.hh"
 
 
 
@@ -59,7 +60,7 @@ static QSqlDatabase s_DB;
   * @{                                                                         
   */        
 
-QSqlError Load_Db(const string& filepath)
+QSqlError Init_Db(const string& filepath)
 {
     if(s_DB.isOpen()){
         s_DB.close();
@@ -71,27 +72,39 @@ QSqlError Load_Db(const string& filepath)
     if (!s_DB.open())
         return s_DB.lastError();
 
-    /*
     QStringList tables = s_DB.tables();
     QSqlQuery q;
     QString sql;
-    if (!tables.contains("tb_puzzle", Qt::CaseInsensitive)){
-        sql = "CREATE TABLE tb_puzzle (\
-                   id      INTEGER       PRIMARY KEY ASC AUTOINCREMENT\
-                                         UNIQUE,\
-                   level   INTEGER       DEFAULT (3),\
-                   content VARCHAR (512),\
-                   solved  BOOLEAN       DEFAULT (0) \
-               );";
+    if (!tables.contains("tb_system", Qt::CaseInsensitive)){
+        sql = "CREATE TABLE tb_system (id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, owner VARCHAR, base_currency_iso_code VARCHAR);";
+        if (!q.exec(sql)){
+            return q.lastError();
+        }
+        sql = QString("INSERT INTO tb_system (id, owner, base_currency_iso_code) VALUES (1, 'admin', '%1');").arg(Config::GetInstance()->Get_BaseCurrencyISOCode().c_str());
         if (!q.exec(sql)){
             return q.lastError();
         }
     }
-    */
 
+    if (!tables.contains("tb_account", Qt::CaseInsensitive)){
+        sql = "CREATE TABLE tb_account (id INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE, name VARCHAR (255) NOT NULL, type INTEGER NOT NULL, number VARCHAR (255), initial_balances DOUBLE DEFAULT (0.0), overdrawn_balances DOUBLE DEFAULT (0.0));";
+        if (!q.exec(sql)){
+            return q.lastError();
+        }
+    }
     return QSqlError();
 }
 
+bool Update_Base_Currency_Iso_Code(string& code, QString& err){
+    QString sql = QString("UPDATE tb_system SET base_currency_iso_code = '%1' WHERE id = 1;").arg(code.c_str());
+    QSqlError sqlErr;
+    QSqlQuery q;
+    if (!q.exec(sql)){
+        err = q.lastError().text();
+        return false;
+    }
+    return true;
+}
                                                                                 
 /**                                                                             
   * @}                                                                         

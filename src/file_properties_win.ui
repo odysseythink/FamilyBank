@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>264</width>
-    <height>378</height>
+    <height>416</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
     <width>264</width>
-    <height>378</height>
+    <height>416</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -527,6 +527,64 @@
     </widget>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>5</number>
+     </property>
+     <property name="leftMargin">
+      <number>5</number>
+     </property>
+     <property name="topMargin">
+      <number>5</number>
+     </property>
+     <property name="rightMargin">
+      <number>5</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>文件名：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="m_iDatabaseFilenNameEdit">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_iDatabaseFilePathBtn">
+       <property name="maximumSize">
+        <size>
+         <width>30</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="spacing">
       <number>5</number>
@@ -617,7 +675,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>146</x>
-     <y>347</y>
+     <y>385</y>
     </hint>
     <hint type="destinationlabel">
      <x>100</x>
@@ -633,7 +691,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>235</x>
-     <y>345</y>
+     <y>383</y>
     </hint>
     <hint type="destinationlabel">
      <x>257</x>
@@ -657,8 +715,93 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>m_iDatabaseFilePathBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CFilePropertiesWin</receiver>
+   <slot>On_DatabaseFilePathBtn_Clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>243</x>
+     <y>346</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>260</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iDatabaseFilenNameEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>CFilePropertiesWin</receiver>
+   <slot>On_DatabaseFilenName_Changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>173</x>
+     <y>349</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>65</x>
+     <y>377</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iAccountNameEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>CFilePropertiesWin</receiver>
+   <slot>On_AccountName_Changed(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>262</x>
+     <y>125</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iOwnerEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>CFilePropertiesWin</receiver>
+   <slot>On_Owner_Changed(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>32</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>262</x>
+     <y>19</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CFilePropertiesWin</sender>
+   <signal>accepted()</signal>
+   <receiver>CFilePropertiesWin</receiver>
+   <slot>On_Accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>24</x>
+     <y>396</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>34</x>
+     <y>396</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>On_ChangeCurrencyBtn_Clicked()</slot>
+  <slot>On_DatabaseFilePathBtn_Clicked()</slot>
+  <slot>On_DatabaseFilenName_Changed()</slot>
+  <slot>On_AccountName_Changed(QString)</slot>
+  <slot>On_Owner_Changed(QString)</slot>
+  <slot>On_Accept()</slot>
  </slots>
 </ui>

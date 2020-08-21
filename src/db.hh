@@ -56,8 +56,8 @@ using namespace std;
 /*============================================================================*/
 /*                                   @FUNCS                                   */
 /*============================================================================*/
-QSqlError Load_Db(const string& filepath);
-
+QSqlError Init_Db(const string& filepath);
+bool Update_Base_Currency_Iso_Code(string& code, QString& err);
 
 
 /*============================================================================*/
