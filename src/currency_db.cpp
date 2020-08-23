@@ -24,6 +24,7 @@
 #define  CURRENCY_DB_GLOBAL
 
 /* includes-------------------------------------------------------------------*/
+#include <glog/logging.h>
 #include "currency_db.hh"
 #include "config.hh"
 
@@ -251,7 +252,7 @@ static QMap<string, CurrencyInfo*> s_CurrenciesMap;
 QString Get_Default_Currency_Name(){
     if(s_CurrenciesMap.size() == 0){
         for(uint64_t index = 0; index < (sizeof(ISO4217_CURRENCIES)/sizeof(CurrencyInfo)); index++){
-            s_CurrenciesMap[ISO4217_CURRENCIES[index].curr_iso_code] = &ISO4217_CURRENCIES[index];
+            s_CurrenciesMap[ISO4217_CURRENCIES[index].iso_code] = &ISO4217_CURRENCIES[index];
         }
     }
     if(s_CurrenciesMap.contains(Config::GetInstance()->Get_BaseCurrencyISOCode())){
@@ -264,7 +265,7 @@ QString Get_Default_Currency_Name(){
 QMap<string, CurrencyInfo*>* Get_All_Currencies_Info(){
     if(s_CurrenciesMap.size() == 0){
         for(uint64_t index = 0; index < (sizeof(ISO4217_CURRENCIES)/sizeof(CurrencyInfo)); index++){
-            s_CurrenciesMap[ISO4217_CURRENCIES[index].curr_iso_code] = &ISO4217_CURRENCIES[index];
+            s_CurrenciesMap[ISO4217_CURRENCIES[index].iso_code] = &ISO4217_CURRENCIES[index];
         }
     }
     return &s_CurrenciesMap;
@@ -273,7 +274,7 @@ QMap<string, CurrencyInfo*>* Get_All_Currencies_Info(){
 CurrencyInfo* Get_Currency_Info(string iso_code){
     if(s_CurrenciesMap.size() == 0){
         for(uint64_t index = 0; index < (sizeof(ISO4217_CURRENCIES)/sizeof(CurrencyInfo)); index++){
-            s_CurrenciesMap[ISO4217_CURRENCIES[index].curr_iso_code] = &ISO4217_CURRENCIES[index];
+            s_CurrenciesMap[ISO4217_CURRENCIES[index].iso_code] = &ISO4217_CURRENCIES[index];
         }
     }
     if(s_CurrenciesMap.contains(iso_code)){
@@ -285,13 +286,43 @@ CurrencyInfo* Get_Currency_Info(string iso_code){
 string Get_Currency_Name(string iso_code){
     if(s_CurrenciesMap.size() == 0){
         for(uint64_t index = 0; index < (sizeof(ISO4217_CURRENCIES)/sizeof(CurrencyInfo)); index++){
-            s_CurrenciesMap[ISO4217_CURRENCIES[index].curr_iso_code] = &ISO4217_CURRENCIES[index];
+            s_CurrenciesMap[ISO4217_CURRENCIES[index].iso_code] = &ISO4217_CURRENCIES[index];
         }
     }
     if(s_CurrenciesMap.contains(iso_code)){
         return s_CurrenciesMap[iso_code]->name;
     }
     return "";
+}
+
+bool Add_Default_Currency(string& iso_code, QString& errmsg){
+    if(s_CurrenciesMap.size() == 0){
+        for(uint64_t index = 0; index < (sizeof(ISO4217_CURRENCIES)/sizeof(CurrencyInfo)); index++){
+            s_CurrenciesMap[ISO4217_CURRENCIES[index].iso_code] = &ISO4217_CURRENCIES[index];
+        }
+    }
+
+    CurrencyInfo* pInfo = nullptr;
+    if(s_CurrenciesMap.contains(iso_code)){
+        pInfo = s_CurrenciesMap[iso_code];
+    }
+    if(pInfo == nullptr){
+        errmsg = QString::fromStdString(iso_code) + " not exist";
+        return false;
+    }
+    QString sql = QString::asprintf("INSERT INTO tb_currency (iso_code,frac_digit,dec_char,grp_char,is_prefix,symbol,name)\
+                VALUES ('%s', %d, '%s', '%s', %d,'%s','%s');",
+                pInfo->iso_code.c_str(),pInfo->frac_digit,pInfo->dec_char.c_str(),
+                pInfo->grp_char.c_str(),pInfo->is_prefix,pInfo->symbol.c_str(),pInfo->name.c_str());
+    QSqlError sqlErr;
+    QSqlQuery q;
+    LOG(INFO) << "sql=" << sql.toStdString();
+    if (!q.exec(sql)){
+        errmsg = q.lastError().text();
+        return false;
+    }
+    LOG(INFO) << "Add_Default_Currency success";
+    return true;
 }
                                                                                 
 /**                                                                             

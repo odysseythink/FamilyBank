@@ -32,7 +32,7 @@
 #include "db.hh"
 #include "config.hh"
 #include "file_properties_win.hh"
-
+#include "version.h"
 
 
 
@@ -106,21 +106,33 @@ CMainWin::CMainWin(QWidget *parent)
 {
     ui->setupUi(this);
     m_bValid = false;
-    if(Config::GetInstance()->Get_DbFilePath() != ""){
-        QFile dbFile(Config::GetInstance()->Get_DbFilePath().c_str());
+    QString winTitle = QString::asprintf("%s - v%s",APP_NAME, APP_VERSION);
+    if(Config::GetInstance()->Get_CurDbFilePath() != ""){
+        QFile dbFile(Config::GetInstance()->Get_CurDbFilePath().c_str());
         if(!dbFile.exists()){
-            QMessageBox::critical(nullptr, "Unable to load database", "database file :" + QString::fromStdString(Config::GetInstance()->Get_DbFilePath()) + " not exist");
+            QMessageBox::critical(nullptr, "Unable to load database", "database file :" + QString::fromStdString(Config::GetInstance()->Get_CurDbFilePath()) + " not exist");
             return;           
         }
 
-        QSqlError err = Init_Db(Config::GetInstance()->Get_DbFilePath());
-        if (err.type() != QSqlError::NoError) {
+        QString errmsg;
+        bool isOk = Init_Db(Config::GetInstance()->Get_CurDbFilePath(), errmsg);
+        if(!isOk) {
             QMessageBox::critical(nullptr, "Unable to load database",
-                        "Error load database: " + err.text());
+                        "Error load database: " + errmsg);
             return;
         }
+
+        QString owner = Get_Db_Owner(errmsg);
+        if(owner == ""){
+            QMessageBox::critical(nullptr, "Unable to get owner of database",
+                        "Error get owner of database: " + errmsg);
+            return;
+        }
+        QFileInfo fileInfo(Config::GetInstance()->Get_CurDbFilePath().c_str());
+        winTitle = fileInfo.fileName() + " - " + owner + " - " + winTitle;
     }
     m_bValid = true;
+    setWindowTitle(winTitle);
 }
 
 CMainWin::~CMainWin()
@@ -134,10 +146,10 @@ void CMainWin::On_OpenAction_Triggered()
     if(path.length() == 0) {
         QMessageBox::information(NULL, tr("数据库文件"), tr("你没有选择任何数据库文件."));
     } else {
-        QSqlError err = Init_Db(path.toStdString());
-        if (err.type() != QSqlError::NoError) {
+        QString errmsg;
+        if (!Init_Db(path.toStdString(), errmsg)) {
             QMessageBox::critical(nullptr, tr("无法加载数据库"),
-                        "加载数据库失败: " + err.text());
+                        "加载数据库失败: " + errmsg);
             m_bValid = false;
             return;
         }
@@ -149,7 +161,22 @@ void CMainWin::On_NewAction_Triggered()
 {
     std::shared_ptr<CFilePropertiesWin> pWin = std::make_shared<CFilePropertiesWin>(this);
     if(pWin->exec() == QDialog::Accepted){
+        QString winTitle = QString::asprintf("%s - v%s",APP_NAME, APP_VERSION);
+        if(Config::GetInstance()->Get_CurDbFilePath() != ""){
+            QFileInfo fileInfo(Config::GetInstance()->Get_CurDbFilePath().c_str());
+            QString errmsg;
+            QString owner = Get_Db_Owner(errmsg);
+            if(owner == ""){
+                QMessageBox::critical(nullptr, "Unable to get owner of database",
+                            "Error get owner of database: " + errmsg);
+                winTitle = fileInfo.fileName() + " - " + winTitle;
+            } else {
 
+                winTitle = fileInfo.fileName() + " - " + owner + " - " + winTitle;
+            }
+        }
+        LOG(INFO) << "On_NewAction_Triggered winTitle=" << winTitle.toStdString();
+        setWindowTitle(winTitle);
     }
 }
 

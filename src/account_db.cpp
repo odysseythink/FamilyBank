@@ -68,6 +68,22 @@ QStringList Get_All_Account_Type_Names(){
     }
     return res;
 }
+
+bool Add_Account(AccountInfo* pInfo, QString& err){
+    if(pInfo == nullptr){
+        err = "invalid arg";
+        return false;
+    }
+    QString sql = QString("INSERT INTO tb_account (name,type,number,initial_balances,overdrawn_balances)\
+                           VALUES ('%1', %2, '%3', %4, %5);").arg(pInfo->name.c_str()).arg(pInfo->type).arg(pInfo->number.c_str()).arg(pInfo->initial_balances).arg(pInfo->overdrawn_balances);
+    QSqlError sqlErr;
+    QSqlQuery q;
+    if (!q.exec(sql)){
+        err = q.lastError().text();
+        return false;
+    }
+    return true;
+}
                                                                                 
 /**                                                                             
   * @}                                                                         

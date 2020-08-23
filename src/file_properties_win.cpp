@@ -101,8 +101,13 @@ void CFilePropertiesWin::On_DatabaseFilePathBtn_Clicked()
         QFile file(filename);
         if(file.exists()){
             if(QMessageBox::question(this, tr("文件名已存在"), tr("文件名已存在，是否覆盖？")) == QMessageBox::Yes){
-                file.remove();
-                ui->m_iDatabaseFilenNameEdit->setText(filename);
+                Close_Db();
+                if(file.remove()){
+                    ui->m_iDatabaseFilenNameEdit->setText(filename);
+                } else {
+                    QMessageBox::critical(nullptr, tr("删除文件失败")+filename+tr("失败"),
+                            tr("删除文件失败")+filename+tr("失败"));
+                }
             }
         } else {
             ui->m_iDatabaseFilenNameEdit->setText(filename);
@@ -151,17 +156,16 @@ void CFilePropertiesWin::On_Owner_Changed(const QString &name)
 
 void CFilePropertiesWin::On_Accept()
 {
-    QSqlError err = Init_Db(ui->m_iDatabaseFilenNameEdit->text().toStdString());
-    if (err.type() != QSqlError::NoError) {
+    QString errmsg;
+    if (!Init_Db(ui->m_iDatabaseFilenNameEdit->text().toStdString(), errmsg)) {
         QMessageBox::critical(nullptr, "新建数据库失败",
-                    "初始化数据库失败: " + err.text());
+                    "初始化数据库失败: " + errmsg);
         QFile file(ui->m_iDatabaseFilenNameEdit->text());
         if(file.exists()){
             file.remove();
         }
         return;
     }
-    QString errmsg;
     if(!Update_Base_Currency_Iso_Code(m_strBaseCurrencyIsoCode, errmsg)){
         QMessageBox::critical(nullptr, tr("新建数据库失败"),
                     "更新基础货币失败: " + errmsg);
@@ -171,6 +175,64 @@ void CFilePropertiesWin::On_Accept()
         }
         return;
     }
+    string owner = ui->m_iOwnerEdit->text().toStdString();
+    if(!Update_Owner(owner, errmsg)){
+        QMessageBox::critical(nullptr, tr("新建数据库失败"),
+                    "更新所有者失败: " + errmsg);
+        QFile file(ui->m_iDatabaseFilenNameEdit->text());
+        if(file.exists()){
+            file.remove();
+        }
+        return;
+    }
+    AccountInfo info;
+    info.name = ui->m_iAccountNameEdit->text().toStdString();
+    // 1 - 银行, 2 - 现金, 3 - 资产, 4 - 信用卡, 5 - 负债
+    info.type = 2;
+    if(ui->m_iAccountTypeEdit->currentText() == tr("银行")){
+        info.type = 1;
+    }else if(ui->m_iAccountTypeEdit->currentText() == tr("现金")){
+        info.type = 2;
+    }else if(ui->m_iAccountTypeEdit->currentText() == tr("资产")){
+        info.type = 3;
+    }else if(ui->m_iAccountTypeEdit->currentText() == tr("信用卡")){
+        info.type = 4;
+    }else if(ui->m_iAccountTypeEdit->currentText() == tr("负债")){
+        info.type = 5;
+    }
+    info.number = ui->m_iAccountNumEdit->text().toStdString();
+    info.initial_balances = ui->m_iAccountStartBalancesEdit->value();
+    info.overdrawn_balances = ui->m_iAccountOverdrawnBalancesEdit->value();
+    if(!Add_Account(&info, errmsg)){
+        QMessageBox::critical(nullptr, tr("新建数据库失败"),
+                    "添加账失败: " + errmsg);
+        QFile file(ui->m_iDatabaseFilenNameEdit->text());
+        if(file.exists()){
+            file.remove();
+        }
+        return;
+    }
+
+    if(m_strBaseCurrencyIsoCode == ""){
+        QMessageBox::critical(nullptr, tr("新建数据库失败"),
+                    "未选择基础货币，无法添加数据库");
+        QFile file(ui->m_iDatabaseFilenNameEdit->text());
+        if(file.exists()){
+            file.remove();
+        }
+        return;
+    }
+    if(!Add_Default_Currency(m_strBaseCurrencyIsoCode, errmsg)){
+        QMessageBox::critical(nullptr, tr("新建数据库失败"),
+                    tr("将默认基础货币配置添加到数据库中失败:") + errmsg);
+        QFile file(ui->m_iDatabaseFilenNameEdit->text());
+        if(file.exists()){
+            file.remove();
+        }
+        return;
+    }
+
+    Config::GetInstance()->Set_CurDbFilePath(ui->m_iDatabaseFilenNameEdit->text().toStdString());
 }
 
 bool CFilePropertiesWin::__Check_All_Right()

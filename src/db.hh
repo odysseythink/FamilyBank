@@ -35,6 +35,7 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QSqlRecord>
 #include <string>
 
 using namespace std;
@@ -56,8 +57,11 @@ using namespace std;
 /*============================================================================*/
 /*                                   @FUNCS                                   */
 /*============================================================================*/
-QSqlError Init_Db(const string& filepath);
+void Close_Db();
+bool Init_Db(const string& filepath, QString& errmsg);
 bool Update_Base_Currency_Iso_Code(string& code, QString& err);
+bool Update_Owner(string& owner, QString& err);
+QString Get_Db_Owner(QString& errmsg);
 
 
 /*============================================================================*/

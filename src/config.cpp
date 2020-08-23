@@ -65,7 +65,7 @@ Config * Config::m_iInstance = nullptr;
 Config::Config()
 {
     m_bUnCache = false;
-    m_strDbFilePath = "";
+    m_strCurDbFilePath = "";
     m_strBaseCurrencyISOCode = "CNY";
 
     QFile jsonFile(CONFIG_FILENAME);
@@ -82,7 +82,7 @@ void Config::__Load_Setttings_From_Local(const QString& filepath)
 {
     QFile jsonFile(filepath);
 
-    if(!jsonFile.exists()){
+    if(jsonFile.exists()){
         if(!jsonFile.open(QIODevice::ReadOnly))
         {
             LOG(WARNING) << "could't open setting json file";
@@ -105,9 +105,9 @@ void Config::__Load_Setttings_From_Local(const QString& filepath)
 
         QJsonObject rootObj = jsonDoc.object();
 
-        if(rootObj.contains("db_filepath") && rootObj["db_filepath"].isString())
+        if(rootObj.contains("cur_db_filepath") && rootObj["cur_db_filepath"].isString())
         {
-            m_strDbFilePath = rootObj.value("db_filepath").toString().toStdString();
+            m_strCurDbFilePath = rootObj.value("cur_db_filepath").toString().toStdString();
         }
 
         if(rootObj.contains("base_currency_iso_code") && rootObj["base_currency_iso_code"].isString())
@@ -127,8 +127,8 @@ void Config::__Update_Setttings_To_Local()
     QJsonObject rootObj;
 
 
-    if(m_strDbFilePath != ""){
-        rootObj.insert("db_filepath", QString::fromStdString(m_strDbFilePath));
+    if(m_strCurDbFilePath != ""){
+        rootObj.insert("cur_db_filepath", QString::fromStdString(m_strCurDbFilePath));
     }
 
     if(m_strBaseCurrencyISOCode != ""){

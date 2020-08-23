@@ -38,7 +38,9 @@
 #include <QMap>
 #include <stdint.h>
 #include <string>
-
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
 
 
 using namespace std;
@@ -52,15 +54,16 @@ using namespace std;
 /*============================================================================*/
 struct _iso4217
 {
-    string   curr_iso_code;
-    uint32_t curr_frac_digit;
-    string   curr_dec_char;
-    string   curr_grp_char;
-    bool     curr_is_prefix;
-    string   curr_symbol;
+    string   iso_code;
+    uint32_t frac_digit;
+    string   dec_char;
+    string   grp_char;
+    bool     is_prefix;
+    string   symbol;
     string   name;
 };
 typedef struct _iso4217 CurrencyInfo;
+
 
 
 /*============================================================================*/
@@ -74,6 +77,10 @@ QString Get_Default_Currency_Name();
 QMap<string, CurrencyInfo*>* Get_All_Currencies_Info();
 CurrencyInfo* Get_Currency_Info(string iso_code);
 string Get_Currency_Name(string iso_code);
+bool Add_Default_Currency(string& iso_code, QString& errmsg);
+
+
+
 
 /*============================================================================*/
 /*                                   @CLASS                                   */

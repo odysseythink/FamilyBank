@@ -33,9 +33,14 @@
 /*                                  @INCLUDES                                 */
 /*============================================================================*/
 #include <QStringList>
+#include <string>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
 
 
 
+using namespace std;
 
 
 /** @addtogroup ACCOUNT_DB
@@ -45,7 +50,15 @@
 /*============================================================================*/
 /*                             @MACROS & @TYPEDEFS                            */
 /*============================================================================*/
-                                                                                
+typedef struct ST_AccountInfo{
+    string name;
+    uint32_t type; // 1 - 银行, 2 - 现金, 3 - 资产, 4 - 信用卡, 5 - 负债
+    string number;
+    double initial_balances;
+    double overdrawn_balances;
+}AccountInfo;
+
+
 /*============================================================================*/
 /*                             @GLOBAL VIRIABLES                              */
 /*============================================================================*/
@@ -54,7 +67,7 @@
 /*                                   @FUNCS                                   */
 /*============================================================================*/
 QStringList Get_All_Account_Type_Names();
-
+bool Add_Account(AccountInfo* pInfo, QString& err);
 
 
 /*============================================================================*/

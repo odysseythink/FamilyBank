@@ -34,7 +34,7 @@
 /*============================================================================*/
 #include <string>
 #include <QString>
-
+#include <glog/logging.h>
 
 using namespace std;
 
@@ -68,13 +68,13 @@ public:
         }
         return m_iInstance;
     }
-    string Get_DbFilePath(){
-        return m_strDbFilePath;
+    string Get_CurDbFilePath(){
+        return m_strCurDbFilePath;
     }
-    void Set_DbFilePath(const string& filepath){
-        if(m_strDbFilePath != filepath){
+    void Set_CurDbFilePath(const string& filepath){
+        if(m_strCurDbFilePath != filepath){
             m_bUnCache = true;
-            m_strDbFilePath = filepath;
+            m_strCurDbFilePath = filepath;
             __Update_Setttings_To_Local();
         }
     }
@@ -98,7 +98,7 @@ private:
 private:
     static Config *m_iInstance;
     bool m_bUnCache;
-    string m_strDbFilePath;
+    string m_strCurDbFilePath;
     string m_strBaseCurrencyISOCode;
 };
                                                                                                                                                                                                                                                                                                     
