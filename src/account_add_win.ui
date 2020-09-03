@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CAccountAddWin</class>
+ <widget class="QDialog" name="CAccountAddWin">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>165</width>
+    <height>63</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>165</width>
+    <height>63</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Courier New</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>新增账户</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resource/res.qrc">
+    <normaloff>:/icon/hicolor_actions_24x24_hb-account.png</normaloff>:/icon/hicolor_actions_24x24_hb-account.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0,0">
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
+   <property name="spacing">
+    <number>5</number>
+   </property>
+   <item row="0" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>账户名：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="m_iNameEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="m_iOkBtn">
+     <property name="text">
+      <string>确定</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="m_iCancelBtn">
+     <property name="text">
+      <string>取消</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../resource/res.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>m_iOkBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CAccountAddWin</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>42</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>61</x>
+     <y>62</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iCancelBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CAccountAddWin</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>139</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>165</x>
+     <y>55</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CAccountAddWin</sender>
+   <signal>accepted()</signal>
+   <receiver>CAccountAddWin</receiver>
+   <slot>__On_Accepted()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>5</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>163</x>
+     <y>9</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>__On_Accepted()</slot>
+ </slots>
+</ui>

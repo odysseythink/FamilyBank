@@ -17,28 +17,42 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     src/account_db.cpp \
+    src/accounts_mgr_win.cpp \
+    src/categories_mgr_win.cpp \
     src/config.cpp \
+    src/currencies_mgr_win.cpp \
     src/currency_db.cpp \
     src/currency_select_win.cpp \
     src/db.cpp \
     src/file_properties_win.cpp \
     src/main.cpp \
-    src/main_win.cpp
+    src/main_win.cpp \
+    src/payees_mgr_win.cpp
 
 HEADERS += \
     src/account_db.hh \
+    src/accounts_mgr_win.hh \
+    src/categories_mgr_win.hh \
     src/config.hh \
+    src/currencies_mgr_win.hh \
     src/currency_db.hh \
     src/currency_select_win.hh \
     src/db.hh \
     src/file_properties_win.hh \
     src/main_win.hh \
+    src/payees_mgr_win.hh \
     src/version.h
 
 FORMS += \
+    src/account_add_win.ui \
+    src/accounts_mgr_win.ui \
+    src/categories_mgr_win.ui \
+    src/currencies_mgr_win.ui \
+    src/currency_edit_win.ui \
     src/currency_select_win.ui \
     src/file_properties_win.ui \
-    src/main_win.ui
+    src/main_win.ui \
+    src/payees_mgr_win.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

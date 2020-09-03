@@ -41,6 +41,8 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QSqlRecord>
+#include <QVariant>
 
 
 using namespace std;
@@ -61,6 +63,7 @@ struct _iso4217
     bool     is_prefix;
     string   symbol;
     string   name;
+    double   exchange_rate;
 };
 typedef struct _iso4217 CurrencyInfo;
 
@@ -78,9 +81,9 @@ QMap<string, CurrencyInfo*>* Get_All_Currencies_Info();
 CurrencyInfo* Get_Currency_Info(string iso_code);
 string Get_Currency_Name(string iso_code);
 bool Add_Default_Currency(string& iso_code, QString& errmsg);
-
-
-
+bool Get_All_Currencies_IsoCode_Name_From_Db(QList<QPair<QString, QString>>& res, QString& errmsg);
+bool Delete_Currency_By_IsoCode(string isoCode, QString& errmsg);
+bool Update_CurrencyInfo(CurrencyInfo* pInfo, QString& errmsg);
 
 /*============================================================================*/
 /*                                   @CLASS                                   */

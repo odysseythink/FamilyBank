@@ -72,6 +72,8 @@ private slots:
     void On_NewAction_Triggered();
     void On_SaveAction_Triggered();
     void On_SaveAsAction_Triggered();
+    void On_AccountsMgrAction_Triggered();
+    void On_CurrenciesMgrAction_Triggered();
 
 private:
     Ui::CMainWin *ui;

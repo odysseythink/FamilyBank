@@ -33,7 +33,8 @@
 #include "config.hh"
 #include "file_properties_win.hh"
 #include "version.h"
-
+#include "accounts_mgr_win.hh"
+#include "currencies_mgr_win.hh"
 
 
     
@@ -154,6 +155,22 @@ void CMainWin::On_OpenAction_Triggered()
             return;
         }
         m_bValid = true;
+        Config::GetInstance()->Set_CurDbFilePath(path.toStdString());
+        QString winTitle = QString::asprintf("%s - v%s",APP_NAME, APP_VERSION);
+
+        QFileInfo fileInfo(Config::GetInstance()->Get_CurDbFilePath().c_str());
+        QString owner = Get_Db_Owner(errmsg);
+        if(owner == ""){
+            QMessageBox::critical(nullptr, "Unable to get owner of database",
+                        "Error get owner of database: " + errmsg);
+            winTitle = fileInfo.fileName() + " - " + winTitle;
+        } else {
+
+            winTitle = fileInfo.fileName() + " - " + owner + " - " + winTitle;
+        }
+
+        LOG(INFO) << "On_OpenAction_Triggered winTitle=" << winTitle.toStdString();
+        setWindowTitle(winTitle);
     }
 }
 
@@ -188,6 +205,22 @@ void CMainWin::On_SaveAction_Triggered()
 void CMainWin::On_SaveAsAction_Triggered()
 {
 
+}
+
+void CMainWin::On_AccountsMgrAction_Triggered()
+{
+    std::shared_ptr<CAccountsMgrWin> pWin = std::make_shared<CAccountsMgrWin>(this);
+    if(pWin->exec() == QDialog::Accepted){
+
+    }
+}
+
+void CMainWin::On_CurrenciesMgrAction_Triggered()
+{
+    std::shared_ptr<CCurrenciesMgrWin> pWin = std::make_shared<CCurrenciesMgrWin>(this);
+    if(pWin->exec() == QDialog::Accepted){
+
+    }
 }
 
 

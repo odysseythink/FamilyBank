@@ -200,9 +200,10 @@ void CFilePropertiesWin::On_Accept()
     }else if(ui->m_iAccountTypeEdit->currentText() == tr("负债")){
         info.type = 5;
     }
-    info.number = ui->m_iAccountNumEdit->text().toStdString();
-    info.initial_balances = ui->m_iAccountStartBalancesEdit->value();
-    info.overdrawn_balances = ui->m_iAccountOverdrawnBalancesEdit->value();
+    info.currency_iso_code = m_strBaseCurrencyIsoCode;
+    info.instution_num = ui->m_iAccountNumEdit->text().toStdString();
+    info.start_balance = ui->m_iAccountStartBalancesEdit->value();
+    info.overdraft_balance = ui->m_iAccountOverdrawnBalancesEdit->value();
     if(!Add_Account(&info, errmsg)){
         QMessageBox::critical(nullptr, tr("新建数据库失败"),
                     "添加账失败: " + errmsg);

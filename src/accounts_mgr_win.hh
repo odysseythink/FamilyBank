@@ -1,10 +1,10 @@
 /**
- * @file      account_db.hh
+ * @file      accounts_mgr_win.hh
  * @brief     
  * @details   
  * @author    RW
  * @version     
- * @date      2020/8/19 16:27:41:994
+ * @date      2020/8/29 0:47:39:684
  * @copyright RW
  * @par         (c) COPYRIGHT 2010-2018 by RW Systems, Inc.    
  *                        All rights reserved.
@@ -15,57 +15,37 @@
  *     other than as expressly provided by the written license agreement    
  *     between RW Systems and its licensee.
  * @par History      
- *         1.Date         -- 2020/8/19 16:27:41:994
+ *         1.Date         -- 2020/8/29 0:47:39:684
  *           Author       -- RW
  *           Modification -- Created file
  *
  */
-#ifndef __ACCOUNT_DB_HH__
-#define __ACCOUNT_DB_HH__
+#ifndef __ACCOUNTS_MGR_WIN_HH__
+#define __ACCOUNTS_MGR_WIN_HH__
 
-#ifdef  ACCOUNT_DB_GLOBAL
-#define ACCOUNT_DB_EXT
+#ifdef  ACCOUNTS_MGR_WIN_GLOBAL
+#define ACCOUNTS_MGR_WIN_EXT
 #else
-#define ACCOUNT_DB_EXT extern
-#endif /* ACCOUNT_DB_GLOBAL */
+#define ACCOUNTS_MGR_WIN_EXT extern
+#endif /* ACCOUNTS_MGR_WIN_GLOBAL */
 
 /*============================================================================*/
 /*                                  @INCLUDES                                 */
 /*============================================================================*/
-#include <glog/logging.h>
-#include <QStringList>
-#include <string>
-#include <QSqlDatabase>
-#include <QSqlError>
-#include <QSqlQuery>
+#include <QDialog>
+#include <QSqlQueryModel>
+#include <memory>
 #include <QSqlRecord>
-#include <QVariant>
 
 
-
-using namespace std;
-
-
-/** @addtogroup ACCOUNT_DB
+/** @addtogroup ACCOUNTS_MGR_WIN
   * @{
   */
  
 /*============================================================================*/
 /*                             @MACROS & @TYPEDEFS                            */
 /*============================================================================*/
-typedef struct ST_AccountInfo{
-    string name;
-    uint32_t type; // 1 - 银行, 2 - 现金, 3 - 资产, 4 - 信用卡, 5 - 负债
-    string currency_iso_code;
-    double start_balance;
-    string remark;
-    bool close;
-    string instution_name;
-    string instution_num;
-    double overdraft_balance;
-}AccountInfo;
-
-
+                                                                                
 /*============================================================================*/
 /*                             @GLOBAL VIRIABLES                              */
 /*============================================================================*/
@@ -73,22 +53,58 @@ typedef struct ST_AccountInfo{
 /*============================================================================*/
 /*                                   @FUNCS                                   */
 /*============================================================================*/
-QStringList Get_All_Account_Type_Names();
-bool Add_Account(AccountInfo* pInfo, QString& err);
-bool Get_AccountInfo_By_Name(AccountInfo* pInfo, string name, QString& errmsg);
-bool Update_AccountInfo(AccountInfo* pInfo, QString& errmsg);
-bool Delete_Account_By_Name(string name, QString& errmsg);
-
-
+                                                                                
 /*============================================================================*/
 /*                                   @CLASS                                   */
 /*============================================================================*/
-                                                                                
+namespace Ui {
+class CAccountsMgrWin;
+class CAccountAddWin;
+}
+
+class CAccountAddWin : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit CAccountAddWin(QWidget *parent = nullptr);
+    ~CAccountAddWin();
+
+private slots:
+    void __On_Accepted();
+
+private:
+    Ui::CAccountAddWin *ui;
+};
+
+class CAccountsMgrWin : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit CAccountsMgrWin(QWidget *parent = nullptr);
+    ~CAccountsMgrWin();
+
+private slots:
+    void __On_AccountName_Select(const QModelIndex& index);
+    void __On_AccountClose_State_Changed(int stat);
+    void __On_ApplyBtn_Clicked();
+    void __On_AddBtn_Clicked();
+    void __On_DelBtn_Clicked();
+
+private:
+    Ui::CAccountsMgrWin *ui;
+    std::shared_ptr<QSqlQueryModel> m_iAccountsNameModel;
+    QString m_strCurAccountName;
+};
+
+
+
 
 /**
   * @}
   */ 
 		
-#endif /* __ACCOUNT_DB_HH__ */
+#endif /* __ACCOUNTS_MGR_WIN_HH__ */
 /*************** (C) COPYRIGHT 2010-2018 RW ***********END OF FILE*************/
 

@@ -97,7 +97,21 @@ bool Init_Db(const string& filepath, QString& errmsg)
     }
 
     if (!tables.contains("tb_account", Qt::CaseInsensitive)){
-        sql = "CREATE TABLE tb_account (id INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE, name VARCHAR (255) NOT NULL, type INTEGER NOT NULL, number VARCHAR (255), initial_balances DOUBLE DEFAULT (0.0), overdrawn_balances DOUBLE DEFAULT (0.0));";
+        sql = "CREATE TABLE tb_account (\
+                   id                INTEGER        PRIMARY KEY ASC AUTOINCREMENT\
+                                                    UNIQUE,\
+                   name              VARCHAR (255)  NOT NULL\
+                                                    UNIQUE,\
+                   type              INTEGER        NOT NULL,\
+                   currency_iso_code VARCHAR (16)   NOT NULL,\
+                   start_balance     DOUBLE         DEFAULT (0.0),\
+                   remark            VARCHAR (1024),\
+                   close             BOOLEAN        DEFAULT (0),\
+                   instution_name    VARCHAR (256),\
+                   instution_num     VARCHAR (256),\
+                   overdraft_balance DOUBLE         DEFAULT (0.0),\
+                   template          VARCHAR (256)\
+               );";
         if (!q.exec(sql)){
             Close_Db();
             errmsg = q.lastError().text();
@@ -106,7 +120,20 @@ bool Init_Db(const string& filepath, QString& errmsg)
     }
 
     if (!tables.contains("tb_currency", Qt::CaseInsensitive)){
-        sql = "CREATE TABLE tb_currency (id INTEGER PRIMARY KEY ASC AUTOINCREMENT, iso_code VARCHAR (10) UNIQUE NOT NULL, frac_digit INTEGER DEFAULT (2), dec_char VARCHAR (1) DEFAULT \".\", grp_char VARCHAR (1) DEFAULT \",\", is_prefix BOOLEAN DEFAULT (false), symbol VARCHAR (16), name VARCHAR (128));";
+        sql = "CREATE TABLE tb_currency ( \
+                   id          INTEGER       PRIMARY KEY ASC AUTOINCREMENT, \
+                   iso_code    VARCHAR (10)  UNIQUE \
+                                             NOT NULL, \
+                   frac_digit  INTEGER       DEFAULT (2), \
+                   dec_char    VARCHAR (1)   DEFAULT [.], \
+                   grp_char    VARCHAR (1)   DEFAULT [,], \
+                   is_prefix   BOOLEAN       DEFAULT (false), \
+                   symbol      VARCHAR (16), \
+                   name        VARCHAR (128), \
+                   update_time DATETIME, \
+                   create_time DATETIME, \
+                   exchange_rate DOUBLE \
+               );";
         if (!q.exec(sql)){
             Close_Db();
             errmsg = q.lastError().text();
@@ -114,6 +141,10 @@ bool Init_Db(const string& filepath, QString& errmsg)
         }
     }
     return true;
+}
+
+QSqlDatabase Get_Db(){
+    return s_DB;
 }
 
 bool Update_Base_Currency_Iso_Code(string& code, QString& errmsg){
@@ -165,6 +196,29 @@ QString Get_Db_Owner(QString& errmsg){
             return owner;
         }
         errmsg = "owner is not exist";
+        return "";
+    }
+    errmsg = q.lastError().text();
+    return "";
+}
+
+string Get_Base_Currency_Iso_Code(QString& errmsg){
+    if(!s_DB.isOpen()){
+        errmsg = "database is not opened";
+        return "";
+    }
+
+    QString sql = QString("SELECT base_currency_iso_code FROM tb_system WHERE id = 1;");
+    QSqlError sqlErr;
+    QSqlQuery q;
+
+    if(q.exec(sql)){
+        if (q.next()) {
+            int fieldNo = q.record().indexOf("base_currency_iso_code");
+            QString code = q.value(fieldNo).toString();
+            return code.toStdString();
+        }
+        errmsg = "base_currency_iso_code is not exist";
         return "";
     }
     errmsg = q.lastError().text();

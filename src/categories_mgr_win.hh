@@ -1,10 +1,10 @@
 /**
- * @file      account_db.hh
+ * @file      categories_mgr_win.hh
  * @brief     
  * @details   
  * @author    RW
  * @version     
- * @date      2020/8/19 16:27:41:994
+ * @date      2020/9/3 1:13:10:754
  * @copyright RW
  * @par         (c) COPYRIGHT 2010-2018 by RW Systems, Inc.    
  *                        All rights reserved.
@@ -15,57 +15,32 @@
  *     other than as expressly provided by the written license agreement    
  *     between RW Systems and its licensee.
  * @par History      
- *         1.Date         -- 2020/8/19 16:27:41:994
+ *         1.Date         -- 2020/9/3 1:13:10:754
  *           Author       -- RW
  *           Modification -- Created file
  *
  */
-#ifndef __ACCOUNT_DB_HH__
-#define __ACCOUNT_DB_HH__
+#ifndef __CATEGORIES_MGR_WIN_HH__
+#define __CATEGORIES_MGR_WIN_HH__
 
-#ifdef  ACCOUNT_DB_GLOBAL
-#define ACCOUNT_DB_EXT
+#ifdef  CATEGORIES_MGR_WIN_GLOBAL
+#define CATEGORIES_MGR_WIN_EXT
 #else
-#define ACCOUNT_DB_EXT extern
-#endif /* ACCOUNT_DB_GLOBAL */
+#define CATEGORIES_MGR_WIN_EXT extern
+#endif /* CATEGORIES_MGR_WIN_GLOBAL */
 
 /*============================================================================*/
 /*                                  @INCLUDES                                 */
 /*============================================================================*/
-#include <glog/logging.h>
-#include <QStringList>
-#include <string>
-#include <QSqlDatabase>
-#include <QSqlError>
-#include <QSqlQuery>
-#include <QSqlRecord>
-#include <QVariant>
-
-
-
-using namespace std;
-
-
-/** @addtogroup ACCOUNT_DB
+ 
+/** @addtogroup CATEGORIES_MGR_WIN
   * @{
   */
  
 /*============================================================================*/
 /*                             @MACROS & @TYPEDEFS                            */
 /*============================================================================*/
-typedef struct ST_AccountInfo{
-    string name;
-    uint32_t type; // 1 - 银行, 2 - 现金, 3 - 资产, 4 - 信用卡, 5 - 负债
-    string currency_iso_code;
-    double start_balance;
-    string remark;
-    bool close;
-    string instution_name;
-    string instution_num;
-    double overdraft_balance;
-}AccountInfo;
-
-
+                                                                                
 /*============================================================================*/
 /*                             @GLOBAL VIRIABLES                              */
 /*============================================================================*/
@@ -73,22 +48,35 @@ typedef struct ST_AccountInfo{
 /*============================================================================*/
 /*                                   @FUNCS                                   */
 /*============================================================================*/
-QStringList Get_All_Account_Type_Names();
-bool Add_Account(AccountInfo* pInfo, QString& err);
-bool Get_AccountInfo_By_Name(AccountInfo* pInfo, string name, QString& errmsg);
-bool Update_AccountInfo(AccountInfo* pInfo, QString& errmsg);
-bool Delete_Account_By_Name(string name, QString& errmsg);
-
-
+                                                                                
 /*============================================================================*/
 /*                                   @CLASS                                   */
 /*============================================================================*/
+#include <QDialog>
+
+namespace Ui {
+class CCategoriesMgrWin;
+}
+
+class CCategoriesMgrWin : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit CCategoriesMgrWin(QWidget *parent = nullptr);
+    ~CCategoriesMgrWin();
+
+private:
+    Ui::CCategoriesMgrWin *ui;
+};
                                                                                 
+
+
 
 /**
   * @}
   */ 
 		
-#endif /* __ACCOUNT_DB_HH__ */
+#endif /* __CATEGORIES_MGR_WIN_HH__ */
 /*************** (C) COPYRIGHT 2010-2018 RW ***********END OF FILE*************/
 

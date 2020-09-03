@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CCurrenciesMgrWin</class>
+ <widget class="QDialog" name="CCurrenciesMgrWin">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>466</width>
+    <height>320</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>货币管理</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resource/res.qrc">
+    <normaloff>:/icon/hicolor_actions_24x24_hb-currency.png</normaloff>:/icon/hicolor_actions_24x24_hb-currency.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>5</number>
+   </property>
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
+   <item>
+    <widget class="QTableView" name="m_iCurrenciesView">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="m_iAddBtn">
+       <property name="text">
+        <string>新增</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_iEditBtn">
+       <property name="text">
+        <string>编辑</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_iDelBtn">
+       <property name="text">
+        <string>删除</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_iSetAsBaseBtn">
+       <property name="text">
+        <string>设置基础货币</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../resource/res.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>m_iAddBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CCurrenciesMgrWin</receiver>
+   <slot>__On_AddBtn_Clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>32</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>32</x>
+     <y>319</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iEditBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CCurrenciesMgrWin</receiver>
+   <slot>__On_EditBtn_Clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>189</x>
+     <y>318</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iDelBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CCurrenciesMgrWin</receiver>
+   <slot>__On_DelBtn_Clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>327</x>
+     <y>300</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>343</x>
+     <y>318</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iSetAsBaseBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CCurrenciesMgrWin</receiver>
+   <slot>__On_SetAsBaseBtn_Clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>427</x>
+     <y>296</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>465</x>
+     <y>298</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iCurrenciesView</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>CCurrenciesMgrWin</receiver>
+   <slot>__On_Currency_Select(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>275</x>
+     <y>88</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>466</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>__On_AddBtn_Clicked()</slot>
+  <slot>__On_EditBtn_Clicked()</slot>
+  <slot>__On_DelBtn_Clicked()</slot>
+  <slot>__On_SetAsBaseBtn_Clicked()</slot>
+  <slot>__On_Currency_Select(QModelIndex)</slot>
+ </slots>
+</ui>

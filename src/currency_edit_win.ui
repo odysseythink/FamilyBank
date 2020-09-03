@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CCurrencyEditWin</class>
+ <widget class="QDialog" name="CCurrencyEditWin">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>205</width>
+    <height>273</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>205</width>
+    <height>273</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Courier New</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resource/res.qrc">
+    <normaloff>:/icon/hicolor_actions_24x24_hb-currency.png</normaloff>:/icon/hicolor_actions_24x24_hb-currency.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>5</number>
+   </property>
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>汇率</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="rightMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="m_iBaseCurrencyLbl">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>1CNY = </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="m_iExchangeRateEdit">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="decimals">
+         <number>6</number>
+        </property>
+        <property name="maximum">
+         <double>10000000000000000.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>格式</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="rightMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <item row="1" column="2">
+       <widget class="QLineEdit" name="m_iSymbolEdit">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>小数位数：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="m_iIsPrefixEdit">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Is Prefix</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>小数点字符：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLineEdit" name="m_iDecCharEdit">
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>符号：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="m_iFormatLbl">
+        <property name="text">
+         <string>$1,000,000.11</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QSpinBox" name="m_iFracDigitEdit">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>数字分组符：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLineEdit" name="m_iGrpCharEdit">
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_iOkBtn">
+       <property name="maximumSize">
+        <size>
+         <width>36</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>确定</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_iCancelBtn">
+       <property name="maximumSize">
+        <size>
+         <width>36</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>取消</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../resource/res.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>CCurrencyEditWin</sender>
+   <signal>accepted()</signal>
+   <receiver>CCurrencyEditWin</receiver>
+   <slot>__On_Accepted()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>13</x>
+     <y>250</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>18</x>
+     <y>252</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iOkBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CCurrencyEditWin</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>257</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>56</x>
+     <y>264</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iCancelBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>CCurrencyEditWin</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>132</x>
+     <y>252</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>155</x>
+     <y>252</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iSymbolEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>CCurrencyEditWin</receiver>
+   <slot>__On_Param_Changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>136</x>
+     <y>112</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>201</x>
+     <y>103</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iIsPrefixEdit</sender>
+   <signal>clicked()</signal>
+   <receiver>CCurrencyEditWin</receiver>
+   <slot>__On_Param_Changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>137</x>
+     <y>138</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>201</x>
+     <y>143</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iDecCharEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>CCurrencyEditWin</receiver>
+   <slot>__On_Param_Changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>116</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>204</x>
+     <y>175</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iFracDigitEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>CCurrencyEditWin</receiver>
+   <slot>__On_Param_Changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>155</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>204</x>
+     <y>205</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_iGrpCharEdit</sender>
+   <signal>editingFinished()</signal>
+   <receiver>CCurrencyEditWin</receiver>
+   <slot>__On_Param_Changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>107</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>232</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>__On_Accepted()</slot>
+  <slot>__On_Param_Changed()</slot>
+ </slots>
+</ui>

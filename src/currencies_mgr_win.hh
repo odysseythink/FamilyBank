@@ -1,10 +1,10 @@
 /**
- * @file      account_db.hh
+ * @file      currencies_mgr_win.hh
  * @brief     
  * @details   
  * @author    RW
  * @version     
- * @date      2020/8/19 16:27:41:994
+ * @date      2020/9/3 1:15:52:273
  * @copyright RW
  * @par         (c) COPYRIGHT 2010-2018 by RW Systems, Inc.    
  *                        All rights reserved.
@@ -15,57 +15,38 @@
  *     other than as expressly provided by the written license agreement    
  *     between RW Systems and its licensee.
  * @par History      
- *         1.Date         -- 2020/8/19 16:27:41:994
+ *         1.Date         -- 2020/9/3 1:15:52:273
  *           Author       -- RW
  *           Modification -- Created file
  *
  */
-#ifndef __ACCOUNT_DB_HH__
-#define __ACCOUNT_DB_HH__
+#ifndef __CURRENCIES_MGR_WIN_HH__
+#define __CURRENCIES_MGR_WIN_HH__
 
-#ifdef  ACCOUNT_DB_GLOBAL
-#define ACCOUNT_DB_EXT
+#ifdef  CURRENCIES_MGR_WIN_GLOBAL
+#define CURRENCIES_MGR_WIN_EXT
 #else
-#define ACCOUNT_DB_EXT extern
-#endif /* ACCOUNT_DB_GLOBAL */
+#define CURRENCIES_MGR_WIN_EXT extern
+#endif /* CURRENCIES_MGR_WIN_GLOBAL */
 
 /*============================================================================*/
 /*                                  @INCLUDES                                 */
 /*============================================================================*/
-#include <glog/logging.h>
-#include <QStringList>
-#include <string>
-#include <QSqlDatabase>
-#include <QSqlError>
-#include <QSqlQuery>
+#include <QDialog>
 #include <QSqlRecord>
-#include <QVariant>
+#include <QSqlQueryModel>
+#include <QSqlTableModel>
+#include "currency_db.hh"
 
 
-
-using namespace std;
-
-
-/** @addtogroup ACCOUNT_DB
+/** @addtogroup CURRENCIES_MGR_WIN
   * @{
   */
  
 /*============================================================================*/
 /*                             @MACROS & @TYPEDEFS                            */
 /*============================================================================*/
-typedef struct ST_AccountInfo{
-    string name;
-    uint32_t type; // 1 - 银行, 2 - 现金, 3 - 资产, 4 - 信用卡, 5 - 负债
-    string currency_iso_code;
-    double start_balance;
-    string remark;
-    bool close;
-    string instution_name;
-    string instution_num;
-    double overdraft_balance;
-}AccountInfo;
-
-
+                                                                                
 /*============================================================================*/
 /*                             @GLOBAL VIRIABLES                              */
 /*============================================================================*/
@@ -73,22 +54,73 @@ typedef struct ST_AccountInfo{
 /*============================================================================*/
 /*                                   @FUNCS                                   */
 /*============================================================================*/
-QStringList Get_All_Account_Type_Names();
-bool Add_Account(AccountInfo* pInfo, QString& err);
-bool Get_AccountInfo_By_Name(AccountInfo* pInfo, string name, QString& errmsg);
-bool Update_AccountInfo(AccountInfo* pInfo, QString& errmsg);
-bool Delete_Account_By_Name(string name, QString& errmsg);
-
-
+                                                                                
 /*============================================================================*/
 /*                                   @CLASS                                   */
 /*============================================================================*/
-                                                                                
+
+
+namespace Ui {
+class CCurrenciesMgrWin;
+class CCurrencyEditWin;
+}
+
+class CCurrencyEditWin : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit CCurrencyEditWin(CurrencyInfo* pInfo, string baseCurrencyIsoCode, QWidget *parent = nullptr);
+    ~CCurrencyEditWin();
+
+private:
+    void __Update_Format();
+
+private slots:
+    void __On_Accepted();
+    void __On_Param_Changed();
+
+private:
+    Ui::CCurrencyEditWin *ui;
+    CurrencyInfo* m_iInfo;
+    std::string m_strBaseCurrencyIsoCode;
+};
+
+class CCurrenciesMgrWin : public QDialog
+{
+    Q_OBJECT
+
+public:
+    explicit CCurrenciesMgrWin(QWidget *parent = nullptr);
+    ~CCurrenciesMgrWin();
+
+private slots:
+    void __On_AddBtn_Clicked();
+    void __On_EditBtn_Clicked();
+    void __On_DelBtn_Clicked();
+    void __On_SetAsBaseBtn_Clicked();
+    void __On_Currency_Select(const QModelIndex& index);
+
+private:
+    Ui::CCurrenciesMgrWin *ui;
+    std::shared_ptr<QSqlTableModel> m_iCurrenciesModel;
+    std::string m_strCurCurrencyIsoCode;
+    std::string m_strBaseCurrencyIsoCode;
+};
+
+
+
 
 /**
   * @}
   */ 
 		
-#endif /* __ACCOUNT_DB_HH__ */
+#endif /* __CURRENCIES_MGR_WIN_HH__ */
 /*************** (C) COPYRIGHT 2010-2018 RW ***********END OF FILE*************/
 
+#ifndef PAYEES_MGR_WIN_HH
+#define PAYEES_MGR_WIN_HH
+
+
+
+#endif // PAYEES_MGR_WIN_HH
